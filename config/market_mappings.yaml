@@ -1,0 +1,299 @@
+# 市场数据映射配置
+# Market Data Mapping Configuration
+#
+# 此文件包含所有市场数据相关的映射配置，从 market_service.py 中提取。
+# This file contains all market data mappings extracted from market_service.py.
+#
+# 注意：修改此文件后需要重启服务才能生效。
+# Note: Changes to this file require service restart to take effect.
+
+# =============================================================================
+# Commodity Futures Mapping (yfinance symbols)
+# 商品期货映射
+# =============================================================================
+commodity_futures:
+  # Precious Metals 贵金属
+  GOLD: "GC=F"
+  黄金: "GC=F"
+  XAU: "GC=F"
+  SILVER: "SI=F"
+  白银: "SI=F"
+  XAG: "SI=F"
+  PLATINUM: "PL=F"
+  铂金: "PL=F"
+  PALLADIUM: "PA=F"
+  钯金: "PA=F"
+  COPPER: "HG=F"
+  铜: "HG=F"
+
+  # Energy 能源
+  WTI: "CL=F"
+  OIL: "CL=F"
+  原油: "CL=F"
+  WTI原油: "CL=F"
+  BRENT: "BZ=F"
+  布伦特: "BZ=F"
+  布伦特原油: "BZ=F"
+  NATGAS: "NG=F"
+  天然气: "NG=F"
+  NATURALGAS: "NG=F"
+  GASOLINE: "RB=F"
+  汽油: "RB=F"
+  HEATINGOIL: "HO=F"
+  取暖油: "HO=F"
+
+  # Agriculture 农产品
+  CORN: "ZC=F"
+  玉米: "ZC=F"
+  SOYBEAN: "ZS=F"
+  大豆: "ZS=F"
+  WHEAT: "ZW=F"
+  小麦: "ZW=F"
+  SOYMEAL: "ZM=F"
+  豆粕: "ZM=F"
+  SOYOIL: "ZL=F"
+  豆油: "ZL=F"
+  COTTON: "CT=F"
+  棉花: "CT=F"
+  SUGAR: "SB=F"
+  糖: "SB=F"
+  COFFEE: "KC=F"
+  咖啡: "KC=F"
+  COCOA: "CC=F"
+  可可: "CC=F"
+  CATTLE: "LE=F"
+  活牛: "LE=F"
+  HOGS: "HE=F"
+  瘦肉猪: "HE=F"
+  LUMBER: "LBS=F"
+  木材: "LBS=F"
+
+  # Index Futures 指数期货
+  ES: "ES=F"
+  SP500: "ES=F"
+  标普500期货: "ES=F"
+  NQ: "NQ=F"
+  NASDAQ期货: "NQ=F"
+  纳斯达克期货: "NQ=F"
+  YM: "YM=F"
+  道琼斯期货: "YM=F"
+  VIX期货: "VX=F"
+  DX: "DX=F"
+  美元指数: "DX=F"
+  DOLLAR: "DX=F"
+  ZN: "ZN=F"
+  10年期美债: "ZN=F"
+  ZB: "ZB=F"
+  30年期美债: "ZB=F"
+
+# =============================================================================
+# Crypto Mapping (yfinance symbols)
+# 加密货币映射
+# =============================================================================
+crypto:
+  BTC: "BTC-USD"
+  BITCOIN: "BTC-USD"
+  比特币: "BTC-USD"
+  ETH: "ETH-USD"
+  ETHEREUM: "ETH-USD"
+  以太坊: "ETH-USD"
+  BNB: "BNB-USD"
+  SOL: "SOL-USD"
+  SOLANA: "SOL-USD"
+  XRP: "XRP-USD"
+  RIPPLE: "XRP-USD"
+  ADA: "ADA-USD"
+  CARDANO: "ADA-USD"
+  DOT: "DOT-USD"
+  POLKADOT: "DOT-USD"
+  DOGE: "DOGE-USD"
+  DOGECOIN: "DOGE-USD"
+  AVAX: "AVAX-USD"
+  AVALANCHE: "AVAX-USD"
+  LINK: "LINK-USD"
+  CHAINLINK: "LINK-USD"
+  MATIC: "MATIC-USD"
+  POLYGON: "MATIC-USD"
+  UNI: "UNI-USD"
+  UNISWAP: "UNI-USD"
+  ATOM: "ATOM-USD"
+  COSMOS: "ATOM-USD"
+  LTC: "LTC-USD"
+  LITECOIN: "LTC-USD"
+  SHIB: "SHIB-USD"
+  APE: "APE-USD"
+  NEAR: "NEAR-USD"
+  FTM: "FTM-USD"
+  ALGO: "ALGO-USD"
+  XLM: "XLM-USD"
+
+# =============================================================================
+# Market Suffix Mapping
+# 市场后缀映射（用于国际股票）
+# =============================================================================
+market_suffix:
+  HK: ".HK"      # Hong Kong 香港
+  SS: ".SS"      # Shanghai (A-shares) 上海
+  SZ: ".SZ"      # Shenzhen (A-shares) 深圳
+  L: ".L"        # London 伦敦
+  T: ".T"        # Tokyo 东京
+  DE: ".DE"      # Germany (Frankfurt) 德国法兰克福
+  SI: ".SI"      # Singapore 新加坡
+  PA: ".PA"      # Paris 巴黎
+  AS: ".AS"      # Amsterdam 阿姆斯特丹
+  MI: ".MI"      # Milan 米兰
+  SW: ".SW"      # Swiss 瑞士
+  TO: ".TO"      # Toronto 多伦多
+  AX: ".AX"      # Australia 澳大利亚
+
+# =============================================================================
+# Asset Type Labels
+# 资产类型标签
+# =============================================================================
+asset_type_labels:
+  US:
+    region: "US"
+    exchange: "NYSE/NASDAQ"
+    currency: "USD"
+  HK:
+    region: "HK"
+    exchange: "HKEX"
+    currency: "HKD"
+  SS:
+    region: "CN"
+    exchange: "SSE"
+    currency: "CNY"
+  SZ:
+    region: "CN"
+    exchange: "SZSE"
+    currency: "CNY"
+  CRYPTO:
+    region: "CRYPTO"
+    exchange: "Crypto"
+    currency: "USD"
+  COMMODITY:
+    region: "COMMODITY"
+    exchange: "COMEX/NYMEX"
+    currency: "USD"
+  UK:
+    region: "UK"
+    exchange: "LSE"
+    currency: "GBP"
+  JP:
+    region: "JP"
+    exchange: "TSE"
+    currency: "JPY"
+  DE:
+    region: "DE"
+    exchange: "XETRA"
+    currency: "EUR"
+  SG:
+    region: "SG"
+    exchange: "SGX"
+    currency: "SGD"
+  # Suffix aliases (yfinance uses suffixes; UI expects market labels)
+  # 后缀别名
+  L:
+    region: "UK"
+    exchange: "LSE"
+    currency: "GBP"
+  T:
+    region: "JP"
+    exchange: "TSE"
+    currency: "JPY"
+  SI:
+    region: "SG"
+    exchange: "SGX"
+    currency: "SGD"
+
+# =============================================================================
+# YFinance Macro Symbols
+# YFinance 宏观指标符号映射
+# =============================================================================
+yfinance_macro_symbols:
+  US10Y: "^TNX"       # 10-Year Treasury Yield 10年期国债收益率
+  DXY: "DX-Y.NYB"     # US Dollar Index 美元指数
+  VIX: "^VIX"         # CBOE Volatility Index 恐慌指数
+  NDX: "^NDX"         # NASDAQ 100 纳斯达克100
+  SPX: "^GSPC"        # S&P 500 标普500
+  HSI: "^HSI"         # Hang Seng Index 恒生指数
+  "XAU/USD": "GC=F"   # Gold Futures 黄金期货
+  GOLD: "GC=F"        # Gold Futures 黄金期货
+  "BTC-USD": "BTC-USD" # Bitcoin 比特币
+  "ETH-USD": "ETH-USD" # Ethereum 以太坊
+
+# =============================================================================
+# Market Config
+# 市场配置（全球主要指数）
+# =============================================================================
+market_config:
+  NASDAQ:
+    name: "NASDAQ"
+    symbol: "IXIC"
+    country: "US"
+    description: "纳斯达克综合指数"
+    color: "#00C805"
+    mcp_tool: "stock_us_spot_em"
+  DJI:
+    name: "DOW"
+    symbol: "DJI"
+    country: "US"
+    description: "道琼斯工业平均指数"
+    color: "#FF6B6B"
+    mcp_tool: "stock_us_spot_em"
+  SPX:
+    name: "S&P 500"
+    symbol: "SPX"
+    country: "US"
+    description: "标普 500 指数"
+    color: "#4ECDC4"
+    mcp_tool: "stock_us_spot_em"
+  HSI:
+    name: "HANG SENG"
+    symbol: "HSI"
+    country: "HK"
+    description: "恒生指数"
+    color: "#FFD93D"
+    mcp_tool: "stock_hk_spot_em"
+  SSEC:
+    name: "SSE"
+    symbol: "000001"
+    country: "CN"
+    description: "上证指数"
+    color: "#6BCB77"
+    mcp_tool: "stock_zh_index_spot_em"
+  SZSE:
+    name: "SZSE"
+    symbol: "399001"
+    country: "CN"
+    description: "深证成指"
+    color: "#4D96FF"
+    mcp_tool: "stock_zh_index_spot_em"
+  N225:
+    name: "NIKKEI"
+    symbol: "N225"
+    country: "JP"
+    description: "日经 225 指数"
+    color: "#FF85A1"
+    mcp_tool: "index_investing_global"
+  KS11:
+    name: "KOSPI"
+    symbol: "KS11"
+    country: "KR"
+    description: "韩国综合指数"
+    color: "#A8E6CF"
+    mcp_tool: "index_investing_global"
+  FTSE:
+    name: "FTSE"
+    symbol: "FTSE"
+    country: "UK"
+    description: "富时 100 指数"
+    color: "#DDA0DD"
+    mcp_tool: "index_investing_global"
+  DAX:
+    name: "DAX"
+    symbol: "DAX"
+    country: "DE"
+    description: "德国 DAX 指数"
+    color: "#98D8C8"
+    mcp_tool: "index_investing_global"

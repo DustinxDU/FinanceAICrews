@@ -1,0 +1,20 @@
+model_list:
+  - model_name: sys_copilot_v1
+    litellm_params:
+      model: gpt-4o-mini
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: sys_agents_fast_v1
+    litellm_params:
+      model: gpt-4o-mini
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: sys_agents_balanced_v1
+    litellm_params:
+      model: gpt-4o
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: sys_agents_best_v1
+    litellm_params:
+      model: gpt-4o
+      api_key: os.environ/OPENAI_API_KEY
+
+general_settings:
+  # keep empty for now

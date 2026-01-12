@@ -1,0 +1,18 @@
+# YFinance MCP Server - Standard MCP Server for US/Global Market Data
+# Python 3.10+
+
+# MCP Protocol
+mcp>=1.0.0
+
+# Web Framework
+starlette>=0.27.0
+uvicorn[standard]>=0.24.0
+
+# Data Source
+yfinance>=0.2.40
+
+# Data Processing
+pandas>=2.0.0
+
+# Environment
+python-dotenv>=1.0.0

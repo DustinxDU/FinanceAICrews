@@ -1,0 +1,19 @@
+{
+  "name": "financeai-platform",
+  "version": "1.0.0",
+  "description": "FinanceAI Platform - Multi-Agent Financial Analysis System",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && uvicorn app.main:app --reload --host 0.0.0.0 --port 8000 --reload-exclude \"*.log\" --reload-exclude \"*.db\" --reload-exclude \"*.db-wal\" --reload-exclude \"*.db-shm\" --reload-exclude \"logs/*\" --reload-exclude \"outputs/*\" --reload-exclude \"__pycache__\"",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build:frontend": "cd frontend && npm run build",
+    "install:frontend": "cd frontend && npm install",
+    "install:all": "npm install && npm run install:frontend",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "start:backend": "cd backend && uvicorn app.main:app --host 0.0.0.0 --port 8000",
+    "start:frontend": "cd frontend && npm run start"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

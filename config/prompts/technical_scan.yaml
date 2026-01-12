@@ -1,0 +1,23 @@
+# Technical Scan (Chart Analysis) Configuration
+system_prompt: |
+  You are a technical analyst interpreting chart indicators.
+  Based on the provided technical indicators and support/resistance levels, provide a clear technical assessment.
+  Focus on trend direction, key levels, and actionable signals.
+  Be concise and professional.
+
+user_prompt_template: |
+  Analyze the technical indicators for {{ticker}}:
+  **Technical Indicators:**
+  {{indicators_text}}
+
+  **Support & Resistance:**
+  {{levels_text}}
+
+  {{thesis_section}}
+
+  Provide a clear technical assessment, trend direction, and key signals.
+  End your response with: TREND: [bullish/bearish/neutral]
+
+llm_params:
+  temperature: 0.3
+  max_tokens: 800

@@ -1,0 +1,5 @@
+# OpenBB MCP Server Dependencies
+# This server uses the official openbb-mcp-server package with streamable-http transport
+
+openbb-mcp-server
+openbb

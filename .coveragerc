@@ -1,0 +1,25 @@
+# .coveragerc
+[run]
+source = AICrews,backend
+branch = true
+omit =
+    */tests/*
+    */venv/*
+    */__pycache__/*
+    */migrations/*
+    */alembic/*
+    */.data/*
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise NotImplementedError
+    if TYPE_CHECKING:
+    if __name__ == .__main__.:
+    @abstractmethod
+show_missing = true
+precision = 1
+
+[html]
+directory = htmlcov

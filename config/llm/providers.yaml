@@ -1,0 +1,366 @@
+version: "4.0"
+updated: "2025-12-27"
+
+providers:
+  # =====================================================
+  # CrewAI 原生支持的提供商
+  # =====================================================
+  openai:
+    display_name: "OpenAI"
+    provider_type: "crewai_native"
+    llm_model_prefix: "openai/"
+    auth:
+      type: "bearer"
+      api_key_env: "OPENAI_API_KEY"
+    endpoints:
+      api_base: "https://api.openai.com/v1"
+      models_path: "/models"
+    discovery:
+      enabled: true
+      strategy: "openai_models"
+      cache_ttl_seconds: 3600
+    capabilities:
+      supports_function_calling: true
+      supports_json_schema: true
+      supports_json_mode: true
+
+  anthropic:
+    display_name: "Anthropic (Claude)"
+    provider_type: "crewai_native"
+    llm_model_prefix: "anthropic/"
+    auth:
+      type: "bearer"
+      api_key_env: "ANTHROPIC_API_KEY"
+    endpoints:
+      api_base: "https://api.anthropic.com"
+      models_path: "/models"
+    discovery:
+      enabled: true
+      strategy: "anthropic_models"
+      cache_ttl_seconds: 3600
+    capabilities:
+      supports_function_calling: true
+      supports_json_schema: false
+      supports_json_mode: false
+
+  google_gemini:
+    display_name: "Google (Gemini API)"
+    provider_type: "crewai_native"
+    llm_model_prefix: "gemini/"
+    auth:
+      type: "query_param"
+      api_key_env: "GOOGLE_API_KEY"
+      query_param_key: "key"
+    endpoints:
+      api_base: "https://generativelanguage.googleapis.com/v1beta"
+      models_path: "/models"
+    discovery:
+      enabled: true
+      strategy: "gemini_models"
+      cache_ttl_seconds: 3600
+    capabilities:
+      supports_function_calling: true
+      supports_json_schema: true
+      supports_json_mode: true
+
+  google_vertex:
+    display_name: "Google (Vertex AI)"
+    provider_type: "crewai_native"
+    llm_model_prefix: "vertex/"
+    auth:
+      type: "gcp_service_account"
+      api_key_env: "GOOGLE_APPLICATION_CREDENTIALS"
+    endpoints:
+      api_base: ""
+    discovery:
+      enabled: false
+
+  azure_openai:
+    display_name: "Azure OpenAI"
+    provider_type: "crewai_native"
+    llm_model_prefix: "azure/"
+    auth:
+      type: "bearer"
+      api_key_env: "AZURE_OPENAI_API_KEY"
+    endpoints:
+      api_base: ""
+      requires_base_url: true
+    discovery:
+      enabled: false
+      requires_base_url: true
+
+  aws_bedrock:
+    display_name: "AWS Bedrock"
+    provider_type: "crewai_native"
+    llm_model_prefix: "bedrock/"
+    auth:
+      type: "aws_credentials"
+      api_key_env: "AWS_ACCESS_KEY_ID"
+    endpoints:
+      api_base: ""
+    discovery:
+      enabled: false
+
+  aws_sagemaker:
+    display_name: "Amazon SageMaker"
+    provider_type: "crewai_native"
+    llm_model_prefix: "sagemaker/"
+    auth:
+      type: "aws_credentials"
+      api_key_env: "AWS_ACCESS_KEY_ID"
+    endpoints:
+      api_base: ""
+      requires_base_url: true
+    discovery:
+      enabled: false
+
+  meta_llama:
+    display_name: "Meta Llama"
+    provider_type: "crewai_native"
+    llm_model_prefix: "meta/"
+    auth:
+      type: "bearer"
+      api_key_env: "LLAMA_API_KEY"
+    endpoints:
+      api_base: "https://api.llama.com"
+    discovery:
+      enabled: false
+
+  mistral:
+    display_name: "Mistral AI"
+    provider_type: "crewai_native"
+    llm_model_prefix: "mistral/"
+    auth:
+      type: "bearer"
+      api_key_env: "MISTRAL_API_KEY"
+    endpoints:
+      api_base: "https://api.mistral.ai/v1"
+    discovery:
+      enabled: false
+
+  nvidia_nim:
+    display_name: "NVIDIA NIM"
+    provider_type: "crewai_native"
+    llm_model_prefix: "nvidia/"
+    auth:
+      type: "bearer"
+      api_key_env: "NVIDIA_API_KEY"
+    endpoints:
+      api_base: "https://api.nvidia.com"
+    discovery:
+      enabled: false
+
+  nvidia_nim_local:
+    display_name: "Local NVIDIA NIM (WSL2)"
+    provider_type: "crewai_native"
+    llm_model_prefix: "openai/"
+    auth:
+      type: "bearer"
+      api_key_env: "NVIDIA_NIM_LOCAL_URL"
+    endpoints:
+      api_base: "http://localhost:8000/v1"
+      requires_base_url: true
+    discovery:
+      enabled: false
+
+  groq:
+    display_name: "Groq"
+    provider_type: "crewai_native"
+    llm_model_prefix: "groq/"
+    auth:
+      type: "bearer"
+      api_key_env: "GROQ_API_KEY"
+    endpoints:
+      api_base: "https://api.groq.com/openai/v1"
+      models_path: "/models"
+    discovery:
+      enabled: true
+      strategy: "openai_models"
+      cache_ttl_seconds: 3600
+
+  ibm_watsonx:
+    display_name: "IBM watsonx.ai"
+    provider_type: "crewai_native"
+    llm_model_prefix: "watsonx/"
+    auth:
+      type: "bearer"
+      api_key_env: "WATSONX_API_KEY"
+    endpoints:
+      api_base: "https://api.watsonx.ibm.com"
+    discovery:
+      enabled: false
+
+  ollama:
+    display_name: "Ollama (Local LLMs)"
+    provider_type: "crewai_native"
+    llm_model_prefix: "ollama/"
+    auth:
+      type: "bearer"
+      api_key_env: "OLLAMA_BASE_URL"
+    endpoints:
+      api_base: "http://localhost:11434"
+      requires_base_url: true
+    discovery:
+      enabled: true
+      strategy: "ollama_models"
+      cache_ttl_seconds: 0
+    capabilities:
+      supports_function_calling: true
+      supports_json_schema: false
+      supports_json_mode: true
+
+  fireworks:
+    display_name: "Fireworks AI"
+    provider_type: "crewai_native"
+    llm_model_prefix: "fireworks/"
+    auth:
+      type: "bearer"
+      api_key_env: "FIREWORKS_API_KEY"
+    endpoints:
+      api_base: "https://api.fireworks.ai/v1"
+    discovery:
+      enabled: false
+
+  perplexity:
+    display_name: "Perplexity AI"
+    provider_type: "crewai_native"
+    llm_model_prefix: "perplexity/"
+    auth:
+      type: "bearer"
+      api_key_env: "PERPLEXITY_API_KEY"
+    endpoints:
+      api_base: "https://api.perplexity.ai"
+    discovery:
+      enabled: false
+
+  huggingface:
+    display_name: "Hugging Face"
+    provider_type: "crewai_native"
+    llm_model_prefix: "huggingface/"
+    auth:
+      type: "bearer"
+      api_key_env: "HUGGINGFACE_API_KEY"
+    endpoints:
+      api_base: "https://api-inference.huggingface.co"
+    discovery:
+      enabled: true
+      strategy: "huggingface_models"
+      cache_ttl_seconds: 3600
+
+  sambanova:
+    display_name: "SambaNova"
+    provider_type: "crewai_native"
+    llm_model_prefix: "sambanova/"
+    auth:
+      type: "bearer"
+      api_key_env: "SAMBANOVA_API_KEY"
+    endpoints:
+      api_base: "https://api.sambanova.ai/v1"
+    discovery:
+      enabled: false
+
+  cerebras:
+    display_name: "Cerebras"
+    provider_type: "crewai_native"
+    llm_model_prefix: "cerebras/"
+    auth:
+      type: "bearer"
+      api_key_env: "CEREBRAS_API_KEY"
+    endpoints:
+      api_base: "https://api.cerebras.ai/v1"
+    discovery:
+      enabled: false
+
+  openrouter:
+    display_name: "OpenRouter"
+    provider_type: "openai_compatible"
+    llm_model_prefix: "openrouter/"
+    auth:
+      type: "bearer"
+      api_key_env: "OPENROUTER_API_KEY"
+      headers:
+        HTTP-Referer: "https://finance-ai-crews.com"
+        X-Title: "FinanceAICrews"
+    endpoints:
+      api_base: "https://openrouter.ai/api/v1"
+      models_path: "/models"
+    discovery:
+      enabled: true
+      strategy: "openai_models"
+      cache_ttl_seconds: 3600
+
+  nebius:
+    display_name: "Nebius AI Studio"
+    provider_type: "crewai_native"
+    llm_model_prefix: "nebius/"
+    auth:
+      type: "bearer"
+      api_key_env: "NEBIUS_API_KEY"
+    endpoints:
+      api_base: "https://api.nebius.ai/v1"
+    discovery:
+      enabled: false
+
+  # =====================================================
+  # 中国 API 提供商（OpenAI 兼容接口）
+  # =====================================================
+  zhipu_ai:
+    display_name: "智谱AI (GLM)"
+    provider_type: "openai_compatible"
+    llm_model_prefix: "openai/"
+    auth:
+      type: "bearer"
+      api_key_env: "ZHIPU_AI_API_KEY"
+    endpoints:
+      api_base: "https://open.bigmodel.cn/api/paas/v4"
+      models_path: "/models"
+    discovery:
+      enabled: true
+      strategy: "openai_models"
+      cache_ttl_seconds: 3600
+
+  kimi_moonshot:
+    display_name: "Kimi (Moonshot)"
+    provider_type: "openai_compatible"
+    llm_model_prefix: "openai/"
+    auth:
+      type: "bearer"
+      api_key_env: "KIMI_API_KEY"
+    endpoints:
+      api_base: "https://api.moonshot.cn/v1"
+      models_path: "/models"
+    discovery:
+      enabled: false
+
+  qianwen_dashscope:
+    display_name: "通义千问 (DashScope)"
+    provider_type: "openai_compatible"
+    llm_model_prefix: "openai/"
+    auth:
+      type: "bearer"
+      api_key_env: "QIANWEN_API_KEY"
+    endpoints:
+      api_base: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+      models_path: "/models"
+    discovery:
+      enabled: false
+
+  # =====================================================
+  # 火山引擎（特殊处理）
+  # =====================================================
+  volcengine:
+    display_name: "火山引擎 (豆包)"
+    provider_type: "volcengine"
+    llm_model_prefix: "openai/"
+    requires_custom_model_name: true
+    auth:
+      type: "bearer"
+      api_key_env: "VOLCENGINE_API_KEY"
+    endpoints:
+      api_base: "https://ark.cn-beijing.volces.com/api/v3"
+    discovery:
+      enabled: false
+    capabilities:
+      supports_function_calling: true
+      supports_json_schema: false
+      supports_json_mode: true

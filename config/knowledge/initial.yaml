@@ -1,0 +1,401 @@
+crisis_2008:
+  display_name: 2008 金融危机复盘
+  description: 详细分析 2008 年金融危机的成因、演变和教训，包括次贷危机、雷曼兄弟破产、全球金融市场崩溃等关键事件
+  category: market_history
+  scope: crew
+  source_type: text
+  tags:
+  - 金融危机
+  - 次贷
+  - 雷曼兄弟
+  - 系统性风险
+  icon: trending-down
+  author: FinanceAI Team
+  version: 1.0.0
+  is_free: true
+  recommended_roles:
+  - risk_manager
+  - macro_analyst
+  - fundamental_analyst
+  content: '# 2008 金融危机复盘
+
+
+    ## 概述
+
+
+    2008年金融危机是自1929年大萧条以来最严重的全球金融危机，起源于美国次贷市场，最终演变为全球性的金融海啸。
+
+
+    ## 关键时间线
+
+
+    ### 2007年
+
+    - **2月**: 汇丰银行宣布次贷相关损失
+
+    - **8月**: 法国巴黎银行冻结三只基金，流动性危机开始
+
+
+    ### 2008年
+
+    - **3月16日**: 贝尔斯登被摩根大通收购
+
+    - **9月7日**: 房利美、房地美被政府接管
+
+    - **9月15日**: 雷曼兄弟破产 - 危机全面爆发
+
+    - **9月16日**: AIG获得850亿美元救助
+
+    - **10月**: 全球股市暴跌，VIX飙升至80以上
+
+
+    ## 核心教训
+
+
+    ### 1. 杠杆风险
+
+    - 过度杠杆是系统性风险的根源
+
+    - 雷曼兄弟杠杆率高达30:1
+
+    - **教训**: 关注企业负债率，警惕高杠杆行业
+
+
+    ### 2. 流动性危机
+
+    - 信用冻结导致连锁反应
+
+    - 即使是优质资产也无法变现
+
+    - **教训**: 保持充足现金储备，避免流动性陷阱
+
+
+    ### 3. 信用评级失效
+
+    - AAA评级的CDO产品大面积违约
+
+    - 评级机构存在利益冲突
+
+    - **教训**: 不要盲目相信评级，独立分析风险
+
+
+    ### 4. 恐慌传染
+
+    - 市场情绪极度悲观时往往是底部
+
+    - 巴菲特在2008年10月发表"Buy American"
+
+    - **教训**: 危机中保持冷静，寻找错杀机会
+
+
+    ## 风险信号识别
+
+
+    以下信号可能预示系统性风险：
+
+    1. 信用利差急剧扩大 (TED Spread > 100bp)
+
+    2. VIX 持续高于 30
+
+    3. 银行间拆借利率异常
+
+    4. 房价/收入比过高
+
+    5. 家庭负债率创新高
+
+
+    ## 投资启示
+
+
+    > "Be fearful when others are greedy, and greedy when others are fearful." - Warren
+    Buffett
+
+
+    在危机中：
+
+    - 持有现金是最好的防守
+
+    - 优质蓝筹股会率先反弹
+
+    - 避免抄底高杠杆公司
+
+    - 分批建仓，不要一次性抄底
+
+    '
+crisis_2000:
+  display_name: 2000 互联网泡沫
+  description: 科技股泡沫的形成与破灭，纳斯达克从 5000 点跌至 1000 点的历史教训
+  category: market_history
+  scope: crew
+  source_type: text
+  tags:
+  - 互联网泡沫
+  - 科技股
+  - 纳斯达克
+  icon: trending-down
+  author: FinanceAI Team
+  version: 1.0.0
+  is_free: true
+  recommended_roles:
+  - technical_analyst
+  - fundamental_analyst
+  content: '# 2000 互联网泡沫\n科技股泡沫的形成与破灭，纳斯达克从 5000 点跌至 1000 点的历史教训
+
+    '
+buffett_principles:
+  display_name: 巴菲特投资原则
+  description: 沃伦·巴菲特的核心投资理念：价值投资、护城河、安全边际、长期持有
+  category: strategy
+  scope: agent
+  source_type: text
+  tags:
+  - 价值投资
+  - 护城河
+  - 长期持有
+  - 巴菲特
+  icon: brain
+  author: FinanceAI Team
+  version: 1.0.0
+  is_free: true
+  recommended_roles:
+  - fundamental_analyst
+  - value_investor
+  content: '# 巴菲特投资原则
+
+
+    ## 核心理念
+
+
+    沃伦·巴菲特是价值投资的集大成者，其投资哲学可归纳为以下核心原则。
+
+
+    ## 1. 能力圈原则 (Circle of Competence)
+
+
+    > "Know your circle of competence, and stick within it."
+
+
+    - 只投资自己能理解的业务
+
+    - 不懂的东西不碰，无论多热门
+
+    - 宁可错过机会，也不犯错误
+
+
+    **应用**: 分析一家公司时，先问自己：我能预测这家公司10年后的样子吗？
+
+
+    ## 2. 护城河理论 (Economic Moat)
+
+
+    优秀企业必须拥有持久的竞争优势：
+
+
+    ### 护城河类型
+
+    1. **品牌护城河**: 可口可乐、苹果
+
+    2. **成本优势**: 沃尔玛、Costco
+
+    3. **网络效应**: Visa、Mastercard
+
+    4. **转换成本**: 微软Office、Adobe
+
+    5. **规模经济**: 亚马逊AWS
+
+
+    **关键指标**:
+
+    - ROE 持续 > 15%
+
+    - 毛利率稳定或上升
+
+    - 市场份额稳定或扩大
+
+
+    ## 3. 安全边际 (Margin of Safety)
+
+
+    > "Price is what you pay, value is what you get."
+
+
+    - 以低于内在价值的价格买入
+
+    - 安全边际至少 25-30%
+
+    - 好公司也要等好价格
+
+
+    **估值方法**:
+
+    - DCF 现金流折现
+
+    - PE/PB 历史分位
+
+    - 股息率倒推
+
+
+    ## 4. 长期持有
+
+
+    > "Our favorite holding period is forever."
+
+
+    - 频繁交易是财富的敌人
+
+    - 复利需要时间发挥威力
+
+    - 好公司值得长期陪伴
+
+
+    **持有条件**:
+
+    - 业务基本面未变
+
+    - 管理层诚信可靠
+
+    - 估值未严重高估
+
+
+    ## 5. 集中投资
+
+
+    - 分散投资是对无知的保护
+
+    - 真正了解的公司，应该重仓
+
+    - 巴菲特前5大持仓占比超70%
+
+
+    ## 6. 管理层品质
+
+
+    关注管理层的三个特质：
+
+    1. **诚信**: 对股东坦诚
+
+    2. **能力**: 资本配置能力
+
+    3. **激情**: 热爱事业而非金钱
+
+
+    **警惕信号**:
+
+    - 频繁并购
+
+    - 过度股权激励
+
+    - 会计操纵
+
+
+    ## 投资检查清单
+
+
+    在买入前，确认以下问题：
+
+
+    - [ ] 我理解这个业务吗？
+
+    - [ ] 这家公司有护城河吗？
+
+    - [ ] 管理层值得信任吗？
+
+    - [ ] 当前价格有安全边际吗？
+
+    - [ ] 我愿意持有10年吗？
+
+    - [ ] 如果股价下跌50%，我会加仓吗？
+
+
+    ## 经典语录
+
+
+    1. "Rule No.1: Never lose money. Rule No.2: Never forget rule No.1."
+
+    2. "It''s far better to buy a wonderful company at a fair price than a fair company
+    at a wonderful price."
+
+    3. "The stock market is a device for transferring money from the impatient to
+    the patient."
+
+    '
+soros_reflexivity:
+  display_name: 索罗斯反身性理论
+  description: 乔治·索罗斯的反身性理论与宏观对冲策略
+  category: strategy
+  scope: both
+  source_type: text
+  tags:
+  - 反身性
+  - 宏观对冲
+  - 索罗斯
+  icon: brain
+  author: FinanceAI Team
+  version: 1.0.0
+  is_free: true
+  recommended_roles:
+  - macro_analyst
+  - trader
+  content: '# 索罗斯反身性理论\n乔治·索罗斯的反身性理论与宏观对冲策略
+
+    '
+technical_patterns:
+  display_name: 技术分析形态大全
+  description: 经典技术分析形态：头肩顶、双底、三角形、旗形等
+  category: strategy
+  scope: agent
+  source_type: text
+  tags:
+  - 技术分析
+  - K线形态
+  - 趋势
+  icon: chart-line
+  author: FinanceAI Team
+  version: 1.0.0
+  is_free: true
+  recommended_roles:
+  - technical_analyst
+  content: '# 技术分析形态大全\n经典技术分析形态：头肩顶、双底、三角形、旗形等
+
+    '
+china_macro_2024:
+  display_name: 2024 中国宏观经济
+  description: 2024 年中国宏观经济形势分析：GDP、CPI、货币政策、房地产
+  category: macro
+  scope: crew
+  source_type: text
+  tags:
+  - 中国
+  - 宏观经济
+  - GDP
+  - 货币政策
+  icon: sparkles
+  author: FinanceAI Team
+  version: 1.0.0
+  is_free: true
+  recommended_roles:
+  - macro_analyst
+  - fundamental_analyst
+  content: '# 2024 中国宏观经济\n2024 年中国宏观经济形势分析：GDP、CPI、货币政策、房地产
+
+    '
+fed_policy:
+  display_name: 美联储货币政策解读
+  description: 美联储利率决策框架、QE/QT 机制、对市场的影响
+  category: macro
+  scope: crew
+  source_type: text
+  tags:
+  - 美联储
+  - 利率
+  - QE
+  - 货币政策
+  icon: sparkles
+  author: FinanceAI Team
+  version: 1.0.0
+  is_free: true
+  recommended_roles:
+  - macro_analyst
+  content: '# 美联储货币政策解读\n美联储利率决策框架、QE/QT 机制、对市场的影响
+
+    '

@@ -1,0 +1,22 @@
+# Grafana Datasource Configuration
+# Auto-provisioned by Docker Compose
+# ===================================
+
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+    editable: false
+    jsonData:
+      httpMethod: GET
+      manageAlerts: true
+      prometheusType: Prometheus
+      prometheusVersion: 2.51.0
+    secureJsonData:
+      # Add API key here if needed for authenticated Prometheus
+      # apiKey: ${GRAFANA_PROMETHEUS_API_KEY}
+    version: 1

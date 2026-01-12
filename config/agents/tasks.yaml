@@ -1,0 +1,297 @@
+# =============================================================================
+# Task Configuration - 所有 Task 的 SOP 模板
+# =============================================================================
+# Philosophy: Code is Engine, Config is Soul
+# 通过 YAML 定义标准作业程序 (SOP)
+# =============================================================================
+# =============================================================================
+# Tasks Definition - 标准化任务库 (扩充版)
+# =============================================================================
+
+# --- 通用基础任务 ---
+
+fundamental_analysis_task:
+  name: "Fundamental Deep Dive"
+  description: |
+    Conduct a comprehensive fundamental analysis of {ticker} for the {timeframe} horizon.
+    **Steps:**
+    1. **Financial Health**: Analyze Balance Sheet.
+    2. **Profitability**: Analyze Income Statement margins.
+    3. **Cash Flow**: Check Free Cash Flow trends.
+    4. **Valuation**: Compare PE, PB vs historicals.
+    State "N/A" if data missing.
+  expected_output: |
+    Markdown report "## 📊 Fundamental Analysis":
+    - Health Score (1-10)
+    - Key Ratios Table
+    - Valuation Assessment
+  agent: fundamental_analyst
+  async_execution: true
+  context: []
+
+technical_analysis_task:
+  name: "Technical Chart Review"
+  description: |
+    Perform technical analysis of {ticker} for {timeframe}.
+    **Steps:**
+    1. **Trend**: Identify primary trend (MA50/MA200).
+    2. **Levels**: Identify Support/Resistance.
+    3. **Momentum**: RSI/MACD signals.
+  expected_output: |
+    Markdown report "## 📈 Technical Analysis":
+    - Primary Trend
+    - Key Levels Table
+    - Indicator Signals
+  agent: technical_analyst
+  async_execution: true
+  context: []
+
+# 补充：情绪/新闻分析
+sentiment_analysis_task:
+  name: "Sentiment & News Scan"
+  description: |
+    Analyze market sentiment for {ticker} over the {timeframe} period.
+    **Steps:**
+    1. News tone and major headlines
+    2. Insider transactions / institutional flows (if available)
+    3. Social/alt data signals
+    State "Data Unavailable" if missing.
+  expected_output: |
+    Markdown report "## 📰 Sentiment Analysis":
+    - Overall Sentiment (Bullish/Bearish/Neutral)
+    - Key Drivers
+    - Risks to Watch
+  agent: sentiment_analyst
+  async_execution: true
+  context: []
+
+# 补充：多空辩论
+bull_research_task:
+  name: "Bullish Case Construction"
+  description: |
+    Based on prior analyses, build a comprehensive BULL case for {ticker}.
+    Focus on growth catalysts, competitive advantages, and valuation upside.
+  expected_output: |
+    Markdown report "## 🟢 Bull Case":
+    - 3-5 strongest bull points with evidence
+    - Potential catalysts and timelines
+    - Upside scenario
+  agent: bull_researcher
+  async_execution: false
+  context:
+    - fundamental_analysis_task
+    - technical_analysis_task
+    - sentiment_analysis_task
+
+bear_research_task:
+  name: "Bearish Case Construction"
+  description: |
+    Based on prior analyses, build a comprehensive BEAR case for {ticker}.
+    Focus on risks, headwinds, and valuation concerns.
+  expected_output: |
+    Markdown report "## 🔴 Bear Case":
+    - 3-5 strongest bear points with evidence
+    - Key risks and catalysts
+    - Downside scenario
+  agent: bear_researcher
+  async_execution: false
+  context:
+    - fundamental_analysis_task
+    - technical_analysis_task
+    - sentiment_analysis_task
+
+debate_synthesis_task:
+  name: "Debate Synthesis & Verdict"
+  description: |
+    Compare Bull vs Bear arguments and deliver a verdict with conviction.
+  expected_output: |
+    Markdown report "## ⚖️ Verdict":
+    - Bull summary
+    - Bear summary
+    - Final Direction (Bullish/Bearish/Neutral) with conviction 1-10
+  agent: debate_moderator
+  async_execution: false
+  context:
+    - bull_research_task
+    - bear_research_task
+
+# 补充：执行与风控
+trading_plan_task:
+  name: "Trading Plan"
+  description: |
+    Turn the verdict into an actionable trading plan for {ticker} with a {timeframe} horizon.
+    Include entry, stops, targets, sizing, and time horizon.
+  expected_output: |
+    Markdown report "## 🧭 Trading Plan":
+    - Action (Buy/Sell/Hold)
+    - Entry/Stop/Target levels
+    - Position size guidance
+    - Time horizon: {timeframe}
+  agent: trader
+  async_execution: false
+  context:
+    - debate_synthesis_task
+
+risk_assessment_task:
+  name: "Risk Assessment"
+  description: |
+    Validate the proposed trading plan against risk limits and correlations.
+  expected_output: |
+    Markdown report "## 🛡️ Risk Assessment":
+    - Position size vs limits
+    - Stop adequacy and worst-case drawdown
+    - Correlation/overlap with portfolio (if known)
+    - Approval/Modification/Reject
+  agent: risk_manager
+  async_execution: false
+  context:
+    - trading_plan_task
+
+# --- Bridgewater Macro Tasks ---
+
+economic_cycle_task:
+  name: "Economic Cycle Analysis"
+  description: |
+    Analyze the current position in debt cycles for a {timeframe} investment horizon.
+    **Steps:**
+    1. **Short-term Cycle**: Where are we in the 5-8 year cycle?
+    2. **Long-term Cycle**: Assess debt/GDP trends.
+    3. **Policy**: Analyze central bank stance (Hawkish/Dovish).
+  expected_output: |
+    Markdown report "## 🌍 Economic Cycle Position":
+    - Cycle Phase (Expansion/Contraction)
+    - Policy Stance
+    - Productivity Assessment
+  agent: dalio_macro_strategist
+  async_execution: true
+  context: []
+
+economic_regime_task:
+  name: "Regime Classification"
+  description: |
+    Classify the current economic regime based on Growth and Inflation.
+    **Regimes:**
+    1. Goldilocks (Growth Up, Inflation Down)
+    2. Reflation (Growth Up, Inflation Up)
+    3. Stagflation (Growth Down, Inflation Up)
+    4. Deflation (Growth Down, Inflation Down)
+  expected_output: |
+    Markdown report "## 🧭 Economic Regime":
+    - Current Regime
+    - Asset Class Implications
+  agent: dalio_macro_strategist
+  async_execution: false
+  context: [economic_cycle_task]
+
+macro_fit_task:
+  name: "Macro Fit Analysis"
+  description: |
+    Analyze how {ticker} fits into the current macro regime for a {timeframe} investment horizon.
+    Does it benefit from the current cycle phase?
+    Build a Bull/Bear case based purely on macro factors.
+  expected_output: |
+    Markdown report "## 🔗 Macro Fit for {ticker}":
+    - Regime Sensitivity
+    - Macro Tailwinds/Headwinds
+    - Macro-driven Verdict
+  agent: dalio_macro_strategist
+  async_execution: false
+  context: [economic_regime_task, fundamental_analysis_task]
+
+risk_parity_task:
+  name: "Risk Parity Allocation"
+  description: |
+    Determine position sizing for {ticker} based on volatility and correlation over {timeframe}.
+    Ensure it fits a risk parity framework (equal risk contribution).
+  expected_output: |
+    Markdown report "## ⚖️ Risk Parity Sizing":
+    - Volatility Assessment
+    - Recommended Risk Weight
+    - Sizing Recommendation
+  agent: risk_manager
+  async_execution: false
+  context: [macro_fit_task]
+
+# --- Buffett Value Tasks ---
+
+buffett_valuation_task:
+  name: "Intrinsic Value Calculation"
+  description: |
+    Calculate intrinsic value for {ticker} using Buffett's methods with a {timeframe} holding period perspective.
+    **Steps:**
+    1. **Owner Earnings**: Net Income + Depr - CapEx.
+    2. **Moat Check**: Is there a durable advantage?
+    3. **Margin of Safety**: Compare Price vs Value.
+  expected_output: |
+    Markdown report "## 🦉 Buffett Valuation":
+    - Moat Rating (Wide/Narrow/None)
+    - Owner Earnings Est.
+    - Intrinsic Value Range
+    - Margin of Safety %
+  agent: buffett_value_investor
+  async_execution: false
+  context: [fundamental_analysis_task]
+
+buffett_decision_task:
+  name: "Final Value Verdict"
+  description: |
+    Make a final Buy/Pass decision for {ticker} with a {timeframe} holding period based on the 4 Buffett tenets:
+    1. Understandable business?
+    2. Favorable long-term prospects?
+    3. Honest/Competent management?
+    4. Sensible price?
+  expected_output: |
+    Markdown report "# 🏛️ Buffett Investment Verdict: {ticker}":
+    - Checklist Results (4/4?)
+    - Final Decision (BUY/PASS)
+    - Rationale
+  agent: buffett_value_investor
+  async_execution: false
+  context: [buffett_valuation_task]
+
+# --- Soros Reflexivity Tasks ---
+
+narrative_analysis_task:
+  name: "Market Narrative Scan"
+  description: |
+    Identify the dominant story driving {ticker}'s price over the {timeframe} trade horizon.
+    What do the Bulls believe? What do the Bears believe?
+  expected_output: |
+    Markdown report "## 🗣️ Market Narrative":
+    - Dominant Story
+    - Consensus View
+  agent: soros_reflexivity_trader
+  async_execution: true
+  context: []
+
+reflexivity_check_task:
+  name: "Reflexivity Mapping"
+  description: |
+    Identify feedback loops for {ticker} within the {timeframe} trade horizon.
+    **Steps:**
+    1. **Premise Test**: Is the market narrative factually true?
+    2. **Loop Check**: Is price influencing fundamentals? (e.g. high stock price -> cheap capital -> growth).
+    3. **Boom/Bust**: Where are we in the cycle?
+  expected_output: |
+    Markdown report "## 🔄 Reflexivity Map":
+    - Feedback Loops Identified
+    - False Premises (if any)
+    - Cycle Position (Boom/Bust)
+  agent: soros_reflexivity_trader
+  async_execution: false
+  context: [narrative_analysis_task, technical_analysis_task]
+
+asymmetric_trade_task:
+  name: "Asymmetric Trade Structure"
+  description: |
+    Structure a trade for {ticker} with a {timeframe} horizon, targeting limited downside and high upside based on the reflexivity analysis.
+    "Find the trend whose premise is false, and bet against it."
+  expected_output: |
+    Markdown report "# ⚡ Asymmetric Trade Idea":
+    - The Setup (False Premise)
+    - The Trigger (Catalyst)
+    - Trade Structure (Long/Short)
+    - Risk/Reward Profile
+  agent: soros_reflexivity_trader
+  async_execution: false
+  context: [reflexivity_check_task]

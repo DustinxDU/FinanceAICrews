@@ -1,0 +1,15 @@
+# Grafana Dashboard Provisioning Configuration
+# Auto-import dashboards from files
+# ===========================================
+
+apiVersion: 1
+
+providers:
+  - name: 'Task Structured Outputs'
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 60
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards
+      foldersFromFilesStructure: true

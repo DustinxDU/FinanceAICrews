@@ -1,0 +1,52 @@
+version: "1.0"
+
+# Canonical tiers: free / starter / pro
+tiers:
+  free:
+    allowed_actions:
+      - run_quick_scan
+      - run_chart_scan
+    allowed_modes: ["eco"]
+    default_mode: "eco"
+    byok:
+      allowed: false
+    limits:
+      max_iterations: 1
+      timeout_seconds: 60
+      max_parallel_tools: 2
+
+  starter:
+    allowed_actions:
+      - run_quick_scan
+      - run_chart_scan
+      - run_official_crew
+      - set_byok_key
+    allowed_modes: ["eco", "standard"]
+    default_mode: "eco"
+    byok:
+      allowed: true
+    limits:
+      max_iterations: 10
+      timeout_seconds: 300
+      max_parallel_tools: 5
+
+  pro:
+    allowed_actions: ["*"]
+    allowed_modes: ["eco", "standard", "extreme"]
+    default_mode: "standard"
+    byok:
+      allowed: true
+    limits:
+      max_iterations: 50
+      timeout_seconds: 600
+      max_parallel_tools: 10
+
+mode_mappings:
+  eco: agents_fast
+  standard: agents_balanced
+  extreme: agents_best
+
+mode_rates:
+  eco: 1
+  standard: 10
+  extreme: 50

@@ -1,0 +1,582 @@
+# FinanceAI Core Pack v1.0.0
+# Standard skill pack for financial analysis agents
+
+metadata:
+  name: "FinanceAI Core Pack"
+  version: "1.0.0"
+  author: "FinanceAICrews Team"
+  license: "MIT"
+  repository: "https://github.com/financeai/core-pack"
+
+  # Marketplace metadata (for future ecosystem)
+  marketplace:
+    published: true
+    category: "finance"
+    tags: ["stocks", "analysis", "quant", "financial-data"]
+    downloads: 0
+    rating: 0.0
+    verified: true
+
+  requirements:
+    python: ">=3.9"
+    financeai: ">=2.0.0"
+
+  changelog:
+    - version: "1.0.0"
+      date: "2026-01-05"
+      changes:
+        - "Initial release with 10 core capabilities"
+        - "22 preset skills for financial analysis"
+        - "3 built-in providers"
+
+# =============================================================================
+# CORE CAPABILITIES (10 capabilities)
+# =============================================================================
+
+capabilities:
+  # Market Data - Core (6 capabilities)
+  - id: "equity_quote"
+    display_name: "Stock Quote"
+    description: "Real-time or delayed stock price snapshot"
+    group: "market_data"
+    type: "mcp"
+    providers: ["mcp:yfinance", "mcp:akshare"]
+    is_core: true
+    icon: "trending-up"
+
+  - id: "equity_history"
+    display_name: "Historical Prices"
+    description: "Historical OHLCV candlestick data"
+    group: "market_data"
+    type: "mcp"
+    providers: ["mcp:yfinance", "mcp:akshare"]
+    is_core: true
+    icon: "bar-chart-2"
+
+  - id: "equity_fundamentals"
+    display_name: "Fundamentals"
+    description: "Company overview, key metrics, valuation"
+    group: "market_data"
+    type: "mcp"
+    providers: ["mcp:yfinance", "mcp:akshare"]
+    is_core: true
+    icon: "file-text"
+
+  - id: "equity_financials"
+    display_name: "Financial Statements"
+    description: "Income statement, balance sheet, cash flow"
+    group: "market_data"
+    type: "mcp"
+    providers: ["mcp:akshare", "mcp:yfinance"]
+    is_core: true
+    icon: "dollar-sign"
+
+  - id: "equity_news"
+    display_name: "News"
+    description: "Company and market news articles"
+    group: "market_data"
+    type: "mcp"
+    providers: ["mcp:akshare"]
+    is_core: true
+    icon: "newspaper"
+
+  - id: "macro_indicators"
+    display_name: "Macro Indicators"
+    description: "GDP, CPI, interest rates, economic data"
+    group: "market_data"
+    type: "mcp"
+    providers: ["mcp:akshare"]
+    is_core: true
+    icon: "globe"
+
+  # Compute - Built-in (2 capabilities)
+  - id: "indicator_calc"
+    display_name: "Indicator Calculation"
+    description: "Calculate technical indicators (RSI, MACD, MA, etc.)"
+    group: "compute"
+    type: "builtin"
+    providers: ["builtin:compute"]
+    dependencies: ["equity_history"]
+    is_core: true
+    icon: "cpu"
+
+  - id: "strategy_eval"
+    display_name: "Strategy Evaluation"
+    description: "Evaluate formula-based trading strategies"
+    group: "compute"
+    type: "builtin"
+    providers: ["builtin:compute"]
+    dependencies: ["equity_history"]
+    is_core: true
+    icon: "zap"
+
+  # External IO - Built-in (2 capabilities)
+  - id: "web_search"
+    display_name: "Web Search"
+    description: "Search the web for information"
+    group: "external_io"
+    type: "builtin"
+    providers: ["builtin:web"]
+    is_core: true
+    icon: "search"
+
+  - id: "web_scrape"
+    display_name: "Web Scrape"
+    description: "Extract content from web pages"
+    group: "external_io"
+    type: "builtin"
+    providers: ["builtin:web"]
+    is_core: true
+    icon: "download"
+
+# =============================================================================
+# SKILLS (17 presets + 11 skillsets)
+# =============================================================================
+
+skills:
+  # Analysis Skillsets (5 skillsets) - Multi-capability bundles
+  - key: "skillset:fundamental_analysis_skillset"
+    display_name: "Fundamental Analysis Skillset"
+    description: "Complete fundamental analysis workflow with financials and news"
+    kind: "skillset"
+    capabilities:
+      - "equity_quote"
+      - "equity_fundamentals"
+      - "equity_financials"
+      - "equity_news"
+    tags: ["recommended", "beginner", "fundamental", "skillset"]
+    is_enabled: true
+    sort_order: 1
+
+  - key: "skillset:technical_analysis_skillset"
+    display_name: "Technical Analysis Skillset"
+    description: "Technical analysis with charts and indicators"
+    kind: "skillset"
+    capabilities:
+      - "equity_quote"
+      - "equity_history"
+      - "indicator_calc"
+    tags: ["recommended", "beginner", "technical", "skillset"]
+    is_enabled: true
+    sort_order: 2
+
+  - key: "skillset:quant_analysis_skillset"
+    display_name: "Quantitative Analysis Skillset"
+    description: "Quantitative analysis with strategy evaluation"
+    kind: "skillset"
+    capabilities:
+      - "equity_history"
+      - "indicator_calc"
+      - "strategy_eval"
+    tags: ["recommended", "advanced", "quant", "skillset"]
+    is_enabled: true
+    sort_order: 3
+
+  - key: "skillset:news_monitoring_skillset"
+    display_name: "News Monitoring Skillset"
+    description: "Monitor news and sentiment for stocks"
+    kind: "skillset"
+    capabilities:
+      - "equity_quote"
+      - "equity_news"
+      - "web_search"
+    tags: ["recommended", "beginner", "skillset"]
+    is_enabled: true
+    sort_order: 4
+
+  - key: "skillset:macro_analysis_skillset"
+    display_name: "Macro Analysis Skillset"
+    description: "Macroeconomic analysis and indicators"
+    kind: "skillset"
+    capabilities:
+      - "macro_indicators"
+      - "web_search"
+    tags: ["recommended", "advanced", "skillset"]
+    is_enabled: true
+    sort_order: 5
+
+  - key: "skillset:sentiment_analysis_skillset"
+    display_name: "Sentiment Analysis Skillset"
+    description: "Sentiment, ownership, news and web signals"
+    kind: "skillset"
+    capabilities:
+      - "equity_quote"
+      - "equity_news"
+      - "equity_ownership"
+      - "sentiment"
+      - "web_search"
+    tags: ["sentiment", "recommended", "skillset"]
+    is_enabled: true
+    sort_order: 6
+
+  - key: "skillset:debate_synthesis_skillset"
+    display_name: "Debate & Synthesis Skillset"
+    description: "Bull vs bear debate, synthesis with multi-source evidence"
+    kind: "skillset"
+    capabilities:
+      - "equity_quote"
+      - "equity_history"
+      - "equity_news"
+      - "equity_fundamentals"
+      - "indicator_calc"
+    tags: ["debate", "synthesis", "skillset"]
+    is_enabled: true
+    sort_order: 7
+
+  - key: "skillset:trading_execution_skillset"
+    display_name: "Trading Execution Skillset"
+    description: "Real-time/ intraday data + indicators for execution planning"
+    kind: "skillset"
+    capabilities:
+      - "equity_quote"
+      - "equity_history"
+      - "equity_intraday"
+      - "indicator_calc"
+    tags: ["trading", "execution", "skillset"]
+    is_enabled: true
+    sort_order: 8
+
+  - key: "skillset:risk_management_skillset"
+    display_name: "Risk Management Skillset"
+    description: "Risk checks using prices, options, indexes, indicators"
+    kind: "skillset"
+    capabilities:
+      - "equity_quote"
+      - "equity_history"
+      - "index_history"
+      - "options"
+      - "indicator_calc"
+    tags: ["risk", "skillset"]
+    is_enabled: true
+    sort_order: 9
+
+  - key: "skillset:value_investing_skillset"
+    display_name: "Value Investing Skillset"
+    description: "Buffett-style value investing data bundle"
+    kind: "skillset"
+    capabilities:
+      - "equity_quote"
+      - "equity_fundamentals"
+      - "equity_financials"
+      - "equity_ownership"
+      - "equity_earnings"
+      - "equity_analyst_research"
+    tags: ["value", "buffett", "skillset"]
+    is_enabled: true
+    sort_order: 10
+
+  - key: "skillset:reflexivity_trading_skillset"
+    display_name: "Reflexivity Trading Skillset"
+    description: "Soros-style reflexivity bundle: price, news, sentiment, indicators"
+    kind: "skillset"
+    capabilities:
+      - "equity_quote"
+      - "equity_history"
+      - "equity_news"
+      - "sentiment"
+      - "indicator_calc"
+      - "web_search"
+    tags: ["soros", "reflexivity", "skillset"]
+    is_enabled: true
+    sort_order: 11
+
+  # Technical Indicator Presets (10 skills)
+  - key: "preset:quant:rsi_14"
+    display_name: "RSI (14-period)"
+    description: "Relative Strength Index with 14-period lookback"
+    kind: "preset"
+    invocation:
+      type: "strategy"
+      ref: "indicator:rsi"
+      defaults:
+        period: 14
+    capabilities:
+      - "equity_history"
+      - "indicator_calc"
+    tags: ["recommended", "technical", "oscillator"]
+    is_enabled: true
+    sort_order: 10
+
+  - key: "preset:quant:macd_default"
+    display_name: "MACD (Default)"
+    description: "Moving Average Convergence Divergence with standard parameters (12, 26, 9)"
+    kind: "preset"
+    invocation:
+      type: "strategy"
+      ref: "indicator:macd"
+      defaults:
+        fast: 12
+        slow: 26
+        signal: 9
+    capabilities:
+      - "equity_history"
+      - "indicator_calc"
+    tags: ["recommended", "technical", "momentum"]
+    is_enabled: true
+    sort_order: 11
+
+  - key: "preset:quant:sma_20"
+    display_name: "SMA (20-day)"
+    description: "Simple Moving Average with 20-day period"
+    kind: "preset"
+    invocation:
+      type: "strategy"
+      ref: "indicator:sma"
+      defaults:
+        period: 20
+    capabilities:
+      - "equity_history"
+      - "indicator_calc"
+    tags: ["technical", "trend"]
+    is_enabled: true
+    sort_order: 12
+
+  - key: "preset:quant:ema_12"
+    display_name: "EMA (12-day)"
+    description: "Exponential Moving Average with 12-day period"
+    kind: "preset"
+    invocation:
+      type: "strategy"
+      ref: "indicator:ema"
+      defaults:
+        period: 12
+    capabilities:
+      - "equity_history"
+      - "indicator_calc"
+    tags: ["technical", "trend"]
+    is_enabled: true
+    sort_order: 13
+
+  - key: "preset:quant:bollinger_20"
+    display_name: "Bollinger Bands (20, 2)"
+    description: "Bollinger Bands with 20-period MA and 2 standard deviations"
+    kind: "preset"
+    invocation:
+      type: "strategy"
+      ref: "indicator:bollinger"
+      defaults:
+        period: 20
+        std_dev: 2
+    capabilities:
+      - "equity_history"
+      - "indicator_calc"
+    tags: ["technical", "volatility"]
+    is_enabled: true
+    sort_order: 14
+
+  - key: "preset:quant:stochastic_14"
+    display_name: "Stochastic Oscillator (14, 3, 3)"
+    description: "Stochastic %K and %D with standard parameters"
+    kind: "preset"
+    invocation:
+      type: "strategy"
+      ref: "indicator:stochastic"
+      defaults:
+        k_period: 14
+        d_period: 3
+        smooth: 3
+    capabilities:
+      - "equity_history"
+      - "indicator_calc"
+    tags: ["technical", "oscillator"]
+    is_enabled: true
+    sort_order: 15
+
+  - key: "preset:quant:atr_14"
+    display_name: "ATR (14-period)"
+    description: "Average True Range for volatility measurement"
+    kind: "preset"
+    invocation:
+      type: "strategy"
+      ref: "indicator:atr"
+      defaults:
+        period: 14
+    capabilities:
+      - "equity_history"
+      - "indicator_calc"
+    tags: ["technical", "volatility"]
+    is_enabled: true
+    sort_order: 16
+
+  - key: "preset:quant:obv"
+    display_name: "OBV (On-Balance Volume)"
+    description: "On-Balance Volume momentum indicator"
+    kind: "preset"
+    invocation:
+      type: "strategy"
+      ref: "indicator:obv"
+    capabilities:
+      - "equity_history"
+      - "indicator_calc"
+    tags: ["technical", "volume"]
+    is_enabled: true
+    sort_order: 17
+
+  - key: "preset:quant:adx_14"
+    display_name: "ADX (14-period)"
+    description: "Average Directional Index for trend strength"
+    kind: "preset"
+    invocation:
+      type: "strategy"
+      ref: "indicator:adx"
+      defaults:
+        period: 14
+    capabilities:
+      - "equity_history"
+      - "indicator_calc"
+    tags: ["technical", "trend"]
+    is_enabled: true
+    sort_order: 18
+
+  - key: "preset:quant:cci_20"
+    display_name: "CCI (20-period)"
+    description: "Commodity Channel Index oscillator"
+    kind: "preset"
+    invocation:
+      type: "strategy"
+      ref: "indicator:cci"
+      defaults:
+        period: 20
+    capabilities:
+      - "equity_history"
+      - "indicator_calc"
+    tags: ["technical", "oscillator"]
+    is_enabled: true
+    sort_order: 19
+
+  # Strategy Presets (5 skills)
+  - key: "preset:strategy:golden_cross"
+    display_name: "Golden Cross Strategy"
+    description: "Long-term bullish signal when 50-day MA crosses above 200-day MA"
+    kind: "preset"
+    invocation:
+      type: "strategy"
+      ref: "strategy:ma_crossover"
+      defaults:
+        fast_period: 50
+        slow_period: 200
+        signal: "bullish"
+    capabilities:
+      - "equity_history"
+      - "indicator_calc"
+      - "strategy_eval"
+    tags: ["strategy", "trend", "long-term"]
+    is_enabled: true
+    sort_order: 20
+
+  - key: "preset:strategy:rsi_oversold"
+    display_name: "RSI Oversold"
+    description: "Buy signal when RSI < 30 (oversold condition)"
+    kind: "preset"
+    invocation:
+      type: "strategy"
+      ref: "strategy:rsi_threshold"
+      defaults:
+        period: 14
+        buy_threshold: 30
+    capabilities:
+      - "equity_history"
+      - "indicator_calc"
+      - "strategy_eval"
+    tags: ["strategy", "oscillator", "reversal"]
+    is_enabled: true
+    sort_order: 21
+
+  - key: "preset:strategy:macd_crossover"
+    display_name: "MACD Crossover"
+    description: "Signal when MACD line crosses signal line"
+    kind: "preset"
+    invocation:
+      type: "strategy"
+      ref: "strategy:macd_signal"
+      defaults:
+        fast: 12
+        slow: 26
+        signal: 9
+    capabilities:
+      - "equity_history"
+      - "indicator_calc"
+      - "strategy_eval"
+    tags: ["strategy", "momentum"]
+    is_enabled: true
+    sort_order: 22
+
+  - key: "preset:strategy:breakout"
+    display_name: "Bollinger Breakout"
+    description: "Breakout signal when price moves outside Bollinger Bands"
+    kind: "preset"
+    invocation:
+      type: "strategy"
+      ref: "strategy:bollinger_breakout"
+      defaults:
+        period: 20
+        std_dev: 2
+    capabilities:
+      - "equity_history"
+      - "indicator_calc"
+      - "strategy_eval"
+    tags: ["strategy", "volatility", "breakout"]
+    is_enabled: true
+    sort_order: 23
+
+  - key: "preset:strategy:volume_spike"
+    display_name: "Volume Spike Detection"
+    description: "Detect unusual volume activity (>2x average)"
+    kind: "preset"
+    invocation:
+      type: "strategy"
+      ref: "strategy:volume_anomaly"
+      defaults:
+        period: 20
+        threshold: 2.0
+    capabilities:
+      - "equity_history"
+      - "indicator_calc"
+      - "strategy_eval"
+    tags: ["strategy", "volume"]
+    is_enabled: true
+    sort_order: 24
+
+# =============================================================================
+# BUILT-IN PROVIDERS (3 providers)
+# =============================================================================
+
+providers:
+  - key: "builtin:compute"
+    display_name: "Built-in Compute"
+    description: "Core computational capabilities (indicators, strategies)"
+    provider_type: "builtin_compute"
+    enabled: true
+    healthy: true
+    priority: 100
+    connection_schema: {}
+    mappings:
+      - capability_id: "indicator_calc"
+        raw_tool_name: "indicator_calc"
+      - capability_id: "strategy_eval"
+        raw_tool_name: "strategy_eval"
+
+  - key: "builtin:serper"
+    display_name: "Built-in Serper Search"
+    description: "Google search via Serper API"
+    provider_type: "builtin_external"
+    enabled: true
+    healthy: true
+    priority: 50
+    connection_schema:
+      requires_env: ["SERPER_API_KEY"]
+    mappings:
+      - capability_id: "web_search"
+        raw_tool_name: "SerperDevTool"
+
+  - key: "builtin:scrape"
+    display_name: "Built-in Web Scrape"
+    description: "Static HTML scraping"
+    provider_type: "builtin_external"
+    enabled: true
+    healthy: true
+    priority: 40
+    connection_schema: {}
+    mappings:
+      - capability_id: "web_scrape"
+        raw_tool_name: "ScrapeWebsiteTool"

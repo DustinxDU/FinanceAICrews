@@ -1,0 +1,151 @@
+# Alembic Database Migrations for FinanceAICrews
+
+## Migration Naming Conventions
+
+### Message Format
+
+Use **snake_case** with a clear action prefix:
+
+```
+<action>_<target>_<details>
+```
+
+**Action Prefixes:**
+| Prefix | Usage | Example |
+|--------|-------|---------|
+| `add_` | New tables, columns, indexes | `add_user_preferences` |
+| `remove_` | Drop tables, columns | `remove_legacy_llm_tables` |
+| `rename_` | Rename tables, columns, enums | `rename_workflow_to_skillset` |
+| `alter_` | Modify column types, constraints | `alter_volume_to_bigint` |
+| `seed_` | Insert initial/default data | `seed_llm_system_profiles` |
+| `fix_` | Bug fixes, data corrections | `fix_crew_version_model` |
+
+### Examples
+
+```bash
+# Good - clear and descriptive
+alembic revision --autogenerate -m "add_user_preferences"
+alembic revision --autogenerate -m "add_privacy_tables"
+alembic revision --autogenerate -m "rename_workflow_to_skillset"
+alembic revision --autogenerate -m "seed_core_tools"
+
+# Bad - vague or unclear
+alembic revision --autogenerate -m "update"
+alembic revision --autogenerate -m "fix stuff"
+alembic revision --autogenerate -m "changes"
+```
+
+---
+
+## Quick Start
+
+### 1. Generate New Migration
+```bash
+# Auto-detect model changes and generate migration
+alembic revision --autogenerate -m "add_new_feature_tables"
+
+# Manual migration (for data migrations or complex changes)
+alembic revision -m "seed_initial_data"
+```
+
+### 2. Apply Migrations
+```bash
+# Upgrade to latest version
+alembic upgrade head
+
+# Upgrade to specific version
+alembic upgrade <revision_id>
+
+# Upgrade one step
+alembic upgrade +1
+```
+
+### 3. Rollback Migrations
+```bash
+# Rollback one version
+alembic downgrade -1
+
+# Rollback to specific version
+alembic downgrade <revision_id>
+
+# Rollback all migrations
+alembic downgrade base
+```
+
+### 4. Check Migration Status
+```bash
+# View current version
+alembic current
+
+# View migration history
+alembic history
+
+# View pending migrations
+alembic heads
+
+# Check for model/DB differences
+alembic check
+```
+
+---
+
+## For New Deployments
+
+Run all migrations from scratch:
+```bash
+alembic upgrade head
+```
+
+## For Existing Deployments
+
+If your database already has all tables but alembic_version is missing:
+```bash
+# Stamp to current head without running migrations
+alembic stamp head
+```
+
+---
+
+## Best Practices
+
+1. **Always review auto-generated migrations** before applying
+2. **Test migrations** in development before production
+3. **Never edit** already-applied migrations
+4. **Use transactions** - Alembic wraps migrations in transactions by default
+5. **Handle PostgreSQL enums carefully** - new enum values require COMMIT before use
+
+### PostgreSQL Enum Migration Pattern
+
+When adding new enum values:
+```python
+def upgrade():
+    # Step 1: Convert to text
+    op.execute("ALTER TABLE my_table ALTER COLUMN kind TYPE VARCHAR(50)")
+
+    # Step 2: Update values
+    op.execute("UPDATE my_table SET kind = 'new_value' WHERE kind = 'old_value'")
+
+    # Step 3: Add new enum value
+    op.execute("ALTER TYPE my_enum ADD VALUE IF NOT EXISTS 'new_value'")
+
+    # Step 4: Commit (required by PostgreSQL)
+    op.execute("COMMIT")
+
+    # Step 5: Convert back to enum
+    op.execute("ALTER TABLE my_table ALTER COLUMN kind TYPE my_enum USING kind::my_enum")
+```
+
+---
+
+## Current Schema Version
+
+- **Head**: `f360d27f7ff9` (rename_workflow_to_skillset)
+- **Total Migrations**: 34
+- **Last Updated**: 2026-01-06
+
+## Notes
+
+- Migration scripts are stored in `alembic/versions/`
+- Database connection is read from `DATABASE_URL` environment variable
+- Ensure database is created before first use
+- Always validate migrations in test environment before production deployment

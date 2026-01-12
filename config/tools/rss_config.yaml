@@ -1,0 +1,140 @@
+# RSS Feed Configurations
+rss_feeds:
+  # === Stock News ===
+  yahoo_stock:
+    url: "https://finance.yahoo.com/rss/headline?s={ticker}"
+    source_name: "Yahoo Finance"
+    category: "stock"
+    max_items: 15
+  sina_finance:
+    url: "https://finance.sina.com.cn/roll/index.d.html?cid=56588&page=1"
+    source_name: "Sina Finance"
+    category: "stock"
+    max_items: 30
+  eastmoney_stock:
+    url: "https://rsshub.app/eastmoney/report/stock"
+    source_name: "East Money"
+    category: "stock"
+    max_items: 20
+  # NEW: MarketWatch Stocks
+  marketwatch_stocks:
+    url: "https://feeds.marketwatch.com/marketwatch/marketpulse/"
+    source_name: "MarketWatch Stocks"
+    category: "stock"
+    max_items: 15
+
+  # === Macro News ===
+  caixin_macro:
+    url: "https://rsshub.app/caixin/latest"
+    source_name: "Caixin"
+    category: "macro"
+    max_items: 20
+  reuters_business:
+    url: "https://www.reutersagency.com/feed/?best-topics=business-finance&post_type=best"
+    source_name: "Reuters"
+    category: "macro"
+    max_items: 20
+  investing_news:
+    url: "https://www.investing.com/rss/news.rss"
+    source_name: "Investing.com"
+    category: "macro"
+    max_items: 20
+  # NEW: MarketWatch Top Stories
+  marketwatch_top:
+    url: "https://feeds.marketwatch.com/marketwatch/topstories/"
+    source_name: "MarketWatch"
+    category: "macro"
+    max_items: 20
+  # NEW: Google News Business (reliable fallback)
+  google_news_business:
+    url: "https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx6TVdZU0FtVnVHZ0pWVXlnQVAB?hl=en-US&gl=US&ceid=US:en"
+    source_name: "Google News Business"
+    category: "macro"
+    max_items: 20
+
+  # === Crypto News ===
+  cointelegraph:
+    url: "https://cointelegraph.com/rss"
+    source_name: "CoinTelegraph"
+    category: "crypto"
+    max_items: 20
+  # NEW: CoinDesk
+  coindesk:
+    url: "https://www.coindesk.com/arc/outboundfeeds/rss/"
+    source_name: "CoinDesk"
+    category: "crypto"
+    max_items: 20
+
+  # === Commodity News ===
+  cnbc_commodities:
+    url: "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100886580"
+    source_name: "CNBC Commodities"
+    category: "commodity"
+    max_items: 15
+  # NEW: CNBC Energy
+  cnbc_energy:
+    url: "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=19836768"
+    source_name: "CNBC Energy"
+    category: "commodity"
+    max_items: 15
+
+# Sentiment analysis keywords
+sentiment_keywords:
+  bullish:
+    - "surge"
+    - "jump"
+    - "rally"
+    - "gain"
+    - "rise"
+    - "soar"
+    - "bullish"
+    - "beat"
+    - "exceed"
+    - "strong"
+    - "breakout"
+    - "momentum"
+    - "recovery"
+    - "rebound"
+    - "upgrade"
+    - "buy"
+    - "outperform"
+    - "growth"
+    - "expansion"
+    - "record high"
+    - "涨"
+    - "利好"
+    - "增长"
+    - "扩张"
+    - "突破"
+    - "超预期"
+    - "看好"
+    - "上涨"
+  bearish:
+    - "fall"
+    - "drop"
+    - "decline"
+    - "plunge"
+    - "crash"
+    - "sink"
+    - "bearish"
+    - "miss"
+    - "weak"
+    - "warning"
+    - "restrict"
+    - "ban"
+    - "delay"
+    - "uncertainty"
+    - "volatility"
+    - "recession"
+    - "downgrade"
+    - "sell"
+    - "underperform"
+    - "contraction"
+    - "跌"
+    - "利空"
+    - "下降"
+    - "萎缩"
+    - "回落"
+    - "不及预期"
+    - "风险"
+    - "下跌"

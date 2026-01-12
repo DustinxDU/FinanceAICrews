@@ -1,0 +1,130 @@
+{
+  "dashboard": {
+    "title": "Task Structured Outputs - Monitoring Dashboard",
+    "tags": ["task-outputs", "crew", "quality"],
+    "timezone": "browser",
+    "editable": true,
+    "hideControls": false,
+    "graphTooltip": 1,
+    "panels": [
+      {
+        "id": 1,
+        "title": "1️⃣ Validation Passed Rate (%)",
+        "type": "stat",
+        "gridPos": {"x": 0, "y": 0, "w": 6, "h": 8},
+        "targets": [
+          {
+            "expr": "100 * (sum(rate(task_output_validation_passed_total[5m])) / sum(rate(task_output_total[5m])))",
+            "legendFormat": "Validation Rate",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "graphMode": "area",
+          "colorMode": "value",
+          "textMode": "value_and_name"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percent",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"value": 0, "color": "red"},
+                {"value": 90, "color": "yellow"},
+                {"value": 95, "color": "green"}
+              ]
+            }
+          }
+        },
+        "description": "Percentage of task outputs that passed validation. Target: >95%, Alert: <90%"
+      },
+      {
+        "id": 2,
+        "title": "2️⃣ Average Guardrail Retries",
+        "type": "stat",
+        "gridPos": {"x": 6, "y": 0, "w": 6, "h": 8},
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.50, sum(rate(guardrail_retry_count_bucket[5m])) by (le))",
+            "legendFormat": "P50 Retries",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "decimals": 2,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"value": 0, "color": "green"},
+                {"value": 1.5, "color": "yellow"},
+                {"value": 2.0, "color": "red"}
+              ]
+            }
+          }
+        },
+        "description": "Median guardrail retry count. Target: <1.5, Alert: >2.0"
+      },
+      {
+        "id": 3,
+        "title": "3️⃣ Citation Coverage (%)",
+        "type": "stat",
+        "gridPos": {"x": 12, "y": 0, "w": 6, "h": 8},
+        "targets": [
+          {
+            "expr": "100 * (sum(rate(task_output_with_citations_total[5m])) / sum(rate(task_output_total[5m])))",
+            "legendFormat": "Citation Coverage",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percent",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"value": 0, "color": "red"},
+                {"value": 60, "color": "yellow"},
+                {"value": 80, "color": "green"}
+              ]
+            }
+          }
+        },
+        "description": "Percentage of task outputs containing citations. Target: >80%, Alert: <60%"
+      },
+      {
+        "id": 4,
+        "title": "4️⃣ Degradation Rate (%)",
+        "type": "stat",
+        "gridPos": {"x": 18, "y": 0, "w": 6, "h": 8},
+        "targets": [
+          {
+            "expr": "100 * (sum(rate(task_output_degraded_total[5m])) / sum(rate(task_output_total[5m])))",
+            "legendFormat": "Degradation Rate",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percent",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"value": 0, "color": "green"},
+                {"value": 20, "color": "yellow"},
+                {"value": 40, "color": "red"}
+              ]
+            }
+          }
+        },
+        "description": "Percentage of native→soft mode degradations. Target: <20%, Alert: >40%"
+      }
+    ],
+    "refresh": "10s",
+    "schemaVersion": 38,
+    "version": 1,
+    "time": {"from": "now-1h", "to": "now"}
+  }
+}

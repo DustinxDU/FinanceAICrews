@@ -1,0 +1,212 @@
+# =============================================================================
+# Crew Definitions - 战队配置种子文件
+# =============================================================================
+# 这里的 Key (e.g., standard_trading_crew) 将作为数据库中的 unique identifier
+# 所有的 tasks 引用必须与 tasks.yaml 中的 Key 一致
+# 所有的 agent 引用必须与 agents.yaml 中的 Key 一致
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# 1. Standard Trading Crew (全能型战队)
+# -----------------------------------------------------------------------------
+standard_trading_crew:
+  name: "Standard Stock Analysis"
+  description: "A comprehensive analysis crew combining Fundamental, Technical, Sentiment analysis, Debate protocols, and Risk Management."
+  process: sequential
+  verbose: true
+  memory_enabled: true
+  cache_enabled: true
+
+  # Schema-Driven UI: 前端会自动渲染这个表单
+  input_schema:
+    type: object
+    properties:
+      ticker:
+        type: string
+        title: "Stock Symbol"
+        description: "e.g., AAPL, NVDA, 0700.HK"
+        default: "AAPL"
+      timeframe:
+        type: string
+        title: "Analysis Timeframe"
+        enum: ["1 week", "1 month", "3 months", "1 year"]
+        default: "1 month"
+      risk_tolerance:
+        type: string
+        title: "Risk Tolerance"
+        enum: ["Conservative", "Moderate", "Aggressive"]
+        default: "Moderate"
+    required: ["ticker", "timeframe"]
+
+  # 执行结构 (Topology)
+  structure:
+    # Phase 1: 数据搜集
+    - agent: fundamental_analyst
+      tasks: [fundamental_analysis_task]
+    
+    - agent: technical_analyst
+      tasks: [technical_analysis_task]
+    
+    - agent: sentiment_analyst
+      tasks: [sentiment_analysis_task]
+
+    # Phase 2: 多空辩论
+    - agent: bull_researcher
+      tasks: [bull_research_task]
+
+    - agent: bear_researcher
+      tasks: [bear_research_task]
+
+    # Phase 3: 综合决策
+    - agent: debate_moderator
+      tasks: [debate_synthesis_task]
+      
+    # Phase 4: 执行落地 (补全了 FinanceAICrews 的最后一步)
+    - agent: trader
+      tasks: [trading_plan_task]
+
+    - agent: risk_manager
+      tasks: [risk_assessment_task]
+
+  manager_llm_config:
+    provider: "openai"
+    model: "gpt-4o"
+    temperature: 0.0
+
+# -----------------------------------------------------------------------------
+# 2. Bridgewater Macro Crew (宏观对冲战队)
+# -----------------------------------------------------------------------------
+bridgewater_macro_crew:
+  name: "Bridgewater Macro Strategy"
+  description: "Ray Dalio inspired macro-economic analysis focusing on debt cycles and asset regimes."
+  process: sequential
+  verbose: true
+  memory_enabled: true
+  cache_enabled: true
+  
+  input_schema:
+    type: object
+    properties:
+      ticker:
+        type: string
+        title: "Target Asset"
+        default: "SPY"
+      timeframe:
+        type: string
+        title: "Time Horizon"
+        enum: ["6 months", "1 year", "3 years"]
+        default: "1 year"
+    required: ["ticker", "timeframe"]
+
+  structure:
+    # 1. 基础数据
+    - agent: fundamental_analyst
+      tasks: [fundamental_analysis_task]
+    
+    # 2. 宏观周期分析
+    - agent: dalio_macro_strategist
+      tasks: [economic_cycle_task]
+    
+    # 3. 经济体制判定
+    - agent: dalio_macro_strategist
+      tasks: [economic_regime_task]
+    
+    # 4. 标的宏观适配性
+    - agent: dalio_macro_strategist
+      tasks: [macro_fit_task]
+    
+    # 5. 风险平价仓位建议
+    - agent: risk_manager
+      tasks: [risk_parity_task]
+
+  manager_llm_config:
+    provider: "openai"
+    model: "gpt-4o"
+
+# -----------------------------------------------------------------------------
+# 3. Buffett Value Crew (价值投资战队)
+# -----------------------------------------------------------------------------
+buffett_value_crew:
+  name: "Buffett Value Investing"
+  description: "Warren Buffett inspired deep value analysis focusing on moats and margin of safety."
+  process: sequential
+  verbose: true
+  memory_enabled: true
+  cache_enabled: true
+  
+  input_schema:
+    type: object
+    properties:
+      ticker:
+        type: string
+        title: "Stock Symbol"
+        default: "KO"
+      timeframe:
+        type: string
+        title: "Holding Period"
+        default: "10 years"
+        readOnly: true # 提示前端这是固定值
+    required: ["ticker"]
+
+  structure:
+    # 1. 基础数据 (财务报表)
+    - agent: fundamental_analyst
+      tasks: [fundamental_analysis_task]
+    
+    # 2. 内在价值计算
+    - agent: buffett_value_investor
+      tasks: [buffett_valuation_task]
+    
+    # 3. 最终决策
+    - agent: buffett_value_investor
+      tasks: [buffett_decision_task]
+
+  manager_llm_config:
+    provider: "openai"
+    model: "gpt-4o"
+
+# -----------------------------------------------------------------------------
+# 4. Soros Reflexivity Crew (反身性战队)
+# -----------------------------------------------------------------------------
+soros_reflexivity_crew:
+  name: "Soros Reflexivity Trading"
+  description: "George Soros inspired analysis focusing on market narratives and boom/bust cycles."
+  process: sequential
+  verbose: true
+  memory_enabled: true
+  cache_enabled: true
+  
+  input_schema:
+    type: object
+    properties:
+      ticker:
+        type: string
+        title: "Target Asset"
+        default: "TSLA"
+      timeframe:
+        type: string
+        title: "Trade Horizon"
+        enum: ["1 month", "3 months", "6 months"]
+        default: "3 months"
+    required: ["ticker", "timeframe"]
+
+  structure:
+    # 1. 技术面基础 (作为反身性的验证数据)
+    - agent: technical_analyst
+      tasks: [technical_analysis_task]
+      
+    # 2. 市场叙事扫描
+    - agent: soros_reflexivity_trader
+      tasks: [narrative_analysis_task]
+    
+    # 3. 反身性映射
+    - agent: soros_reflexivity_trader
+      tasks: [reflexivity_check_task]
+      
+    # 4. 不对称交易构建
+    - agent: soros_reflexivity_trader
+      tasks: [asymmetric_trade_task]
+
+  manager_llm_config:
+    provider: "openai"
+    model: "gpt-4o"

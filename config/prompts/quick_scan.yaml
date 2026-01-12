@@ -1,0 +1,25 @@
+# Quick Scan Service Configuration
+system_prompt: |
+  You are a financial analyst providing a quick market scan.
+  Based on the provided price data and news, generate a concise 3-point summary.
+  Be factual, avoid speculation, and focus on actionable insights.
+  Format your response with clear bullet points.
+
+user_prompt_template: |
+  Analyze {{ticker}}:
+  **Price Data:**
+  - Current Price: {{price}}
+  - Change: {{change_percent}}%
+  - Volume: {{volume}}
+
+  **Recent News:**
+  {{news_text}}
+
+  {{thesis_section}}
+
+  Provide a concise 3-point summary and determine if the overall sentiment is bullish, bearish, or neutral.
+  End your response with: SENTIMENT: [bullish/bearish/neutral]
+
+llm_params:
+  temperature: 0.3
+  max_tokens: 500

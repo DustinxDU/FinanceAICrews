@@ -1,0 +1,21 @@
+# MCP Server Template Dependencies
+# Customize based on your SDK/data source
+
+# MCP Protocol (required)
+mcp>=1.0.0
+
+# Web Framework (for SSE transport)
+starlette>=0.27.0
+uvicorn[standard]>=0.24.0
+
+# Data Processing
+pandas>=2.0.0
+
+# HTTP Client
+requests>=2.31.0
+
+# Environment
+python-dotenv>=1.0.0
+
+# Add your SDK here, e.g.:
+# your-sdk>=1.0.0

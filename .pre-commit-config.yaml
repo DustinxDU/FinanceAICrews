@@ -1,0 +1,37 @@
+# .pre-commit-config.yaml
+repos:
+  # Python 代码质量
+  - repo: https://github.com/psf/black
+    rev: 24.4.2
+    hooks:
+      - id: black
+        language_version: python3.12
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        args: ["--profile", "black"]
+
+  # 本地快速测试
+  - repo: local
+    hooks:
+      - id: pytest-quick
+        name: Quick pytest check
+        entry: pytest tests/unit -m "not slow" -x --tb=line -q
+        language: system
+        types: [python]
+        pass_filenames: false
+        stages: [pre-push]  # 只在 push 前运行，不阻塞 commit
+
+      - id: frontend-lint
+        name: Frontend lint
+        entry: bash -c 'cd frontend && npm run lint'
+        language: system
+        files: ^frontend/.*\.(ts|tsx)$
+        pass_filenames: false
+
+# CI configuration
+ci:
+  autofix_commit_msg: "style: auto-fix by pre-commit"
+  autoupdate_commit_msg: "chore: update pre-commit hooks"

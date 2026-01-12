@@ -1,0 +1,290 @@
+services:
+  # ============================================
+  # Nginx Gateway - 统一入口
+  # ============================================
+  gateway:
+    image: nginx:1.25-alpine
+    container_name: financeai_gateway
+    restart: unless-stopped
+    depends_on:
+      - web
+      - backend
+    ports:
+      - "${GATEWAY_PORT:-8081}:80"
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - financeai_net
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ============================================
+  # Redis Cache
+  # ============================================
+  redis:
+    image: redis:alpine
+    container_name: financeai_redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - financeai_net
+
+  # ============================================
+  # Next.js Frontend (Standalone Mode)
+  # ============================================
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: financeai_frontend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=
+    expose:
+      - "3000"
+    networks:
+      - financeai_net
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # ============================================
+  # FastAPI Backend
+  # ============================================
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: financeai_backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      litellm:
+        condition: service_healthy
+      akshare_mcp:
+        condition: service_healthy
+      yfinance_mcp:
+        condition: service_healthy
+      openbb_mcp:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://${DB_USER:-admin}:${DB_PASSWORD:-password123}@db:5432/${DB_NAME:-trading_agents}
+      - CORS_ORIGINS=http://localhost,http://financeai_gateway
+      - REDIS_HOST=${REDIS_HOST:-redis}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - REDIS_DB=${REDIS_DB:-0}
+      - AKSHARE_MCP_URL=${AKSHARE_MCP_URL:-http://akshare_mcp:8009/sse}
+      - YFINANCE_MCP_URL=${YFINANCE_MCP_URL:-http://yfinance_mcp:8010/sse}
+      - OPENBB_MCP_URL=${OPENBB_MCP_URL:-http://openbb_mcp:8001/mcp}
+      # LLM API Keys (从 .env 读取)
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-}
+      # LiteLLM Proxy 配置 (App only needs proxy URLs, NOT master key)
+      - LITELLM_PROXY_BASE_URL=http://litellm:4000/v1
+      - LITELLM_PROXY_ADMIN_BASE_URL=http://litellm:4000
+    expose:
+      - "8000"
+    volumes:
+      - ./config/knowledge:/app/knowledge:ro
+      - ./config:/app/config:ro
+      - ./.data:/app/.data
+    networks:
+      - financeai_net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # ============================================
+  # 核心数据库：PostgreSQL + pgvector
+  # ============================================
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: financeai_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-admin}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password123}
+      POSTGRES_DB: ${DB_NAME:-trading_agents}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-admin} -d ${DB_NAME:-trading_agents}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - financeai_net
+
+  # Akshare MCP Server（Standard MCP SSE）
+  akshare_mcp:
+    build:
+      context: ./docker/mcp/akshare
+      dockerfile: Dockerfile
+    container_name: akshare_mcp
+    restart: unless-stopped
+    ports:
+      - "8009:8009"
+    environment:
+      - AKSHARE_MCP_HOST=0.0.0.0
+      - AKSHARE_MCP_PORT=8009
+      - AKSHARE_MCP_CACHE=true
+      - AKSHARE_MCP_RATE_LIMIT=60
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8009/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - financeai_net
+
+  # OpenBB MCP Server（HTTP streamable, 独立容器，不污染主环境）
+  openbb_mcp:
+    build:
+      context: ./docker/mcp/openbb
+      dockerfile: Dockerfile
+    container_name: openbb_mcp
+    restart: unless-stopped
+    ports:
+      - "8008:8001"
+    environment:
+      # 可选：限制默认暴露的工具类别，减少加载和依赖
+      - OPENBB_MCP_DEFAULT_TOOL_CATEGORIES=equity,news
+      # 从主机 .env 文件传递 OpenBB 数据源 API Keys
+      - OPENBB_POLYGON_API_KEY=${OPENBB_POLYGON_API_KEY:-}
+      - OPENBB_FMP_API_KEY=${OPENBB_FMP_API_KEY:-}
+      - OPENBB_BENZINGA_API_KEY=${OPENBB_BENZINGA_API_KEY:-}
+    volumes:
+      # 存放 openbb 的配置/密钥，保持持久化且不污染仓库
+      - openbb_platform:/root/.openbb_platform
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/mcp/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - financeai_net
+
+  # YFinance MCP Server（Standard MCP SSE for US/Global Markets）
+  yfinance_mcp:
+    build:
+      context: ./docker/mcp/yfinance
+      dockerfile: Dockerfile
+    container_name: yfinance_mcp
+    restart: unless-stopped
+    ports:
+      - "8010:8010"
+    environment:
+      - YFINANCE_MCP_HOST=0.0.0.0
+      - YFINANCE_MCP_PORT=8010
+      - YFINANCE_MCP_CACHE=true
+      - YFINANCE_MCP_RATE_LIMIT=120
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8010/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - financeai_net
+
+  # 可选：PgAdmin (Web版数据库管理界面，方便查看数据)
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: trading_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    networks:
+      - financeai_net
+
+  # ============================================
+  # LiteLLM Proxy Database (独立 Postgres)
+  # ============================================
+  litellm-db:
+    image: postgres:16-alpine
+    container_name: faic-litellm-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: litellm
+      POSTGRES_USER: litellm_admin
+      POSTGRES_PASSWORD: ${LITELLM_DB_PASSWORD:-litellm_dev_password}
+    volumes:
+      - litellm_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U litellm_admin -d litellm"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - financeai_net
+
+  # ============================================
+  # LiteLLM Proxy (Model Gateway & Virtual Keys)
+  # ============================================
+  litellm:
+    image: ghcr.io/berriai/litellm:main-latest
+    container_name: faic-litellm-proxy
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://litellm_admin:${LITELLM_DB_PASSWORD:-litellm_dev_password}@litellm-db:5432/litellm
+      LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+    volumes:
+      - ./docker/litellm/config.yaml:/app/config.yaml:ro
+    ports:
+      - "${LITELLM_PORT:-4000}:4000"
+    command: ["--config", "/app/config.yaml", "--port", "4000"]
+    depends_on:
+      litellm-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:4000/health/readiness', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    networks:
+      - financeai_net
+
+networks:
+  financeai_net:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  openbb_platform:
+  redis_data:
+  litellm_postgres_data:
