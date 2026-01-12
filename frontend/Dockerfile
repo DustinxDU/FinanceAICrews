@@ -43,9 +43,10 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 # 复制 standalone 输出
-# 注意: turbopack.root 配置导致 standalone 输出在 frontend/ 子目录下
+# 注意: turbopack.root 配置导致 standalone 输出在子目录下
+# Docker 构建时工作目录是 /app，所以输出在 .next/standalone/app/
 COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone/frontend ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone/app ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
